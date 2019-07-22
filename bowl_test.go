@@ -99,14 +99,16 @@ func TestGetScoreWithUseCase2(t *testing.T) {
 			t.Fatalf("Unexpected error: %s.", err.Error())
 		}
 
-		if got := GetScore(frames); got.Total != expectedScore.Total {
+		got := GetScore(frames)
+		t.Logf("Score: %+v", got)
+		if got.Total != expectedScore.Total {
 			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Total, got.Total)
 		}
-		if got := GetScore(frames); got.Valid != expectedScore.Valid {
-			t.Fatalf("Unexpected score for %s. Expected: %t - found: %t.", file, expectedScore.Valid, got.Valid)
+		if got.Valid != expectedScore.Valid {
+			t.Fatalf("Unexpected validity for %s. Expected: %t - found: %t.", file, expectedScore.Valid, got.Valid)
 		}
-		if got := GetScore(frames); got.Error != expectedScore.Error {
-			t.Fatalf("Unexpected score for %s. Expected: %+v - found: %+v.", file, expectedScore.Error, got.Error)
+		if got.ErrorMessage != expectedScore.ErrorMessage {
+			t.Fatalf("Unexpected error message for %s. Expected: %+v - found: %+v.", file, expectedScore.ErrorMessage, got.ErrorMessage)
 		}
 	}
 }

@@ -8,14 +8,14 @@ type BowlingError struct {
 
 var (
 	// InvalidRoll is an error. :(
-	InvalidRoll = BowlingError{1, "invalid roll"}
+	InvalidRoll = BowlingError{1, "Invalid roll"}
 
 	// InvalidFrame is an error. :(
-	InvalidFrame = BowlingError{2, "invalid frame"}
+	InvalidFrame = BowlingError{2, "Invalid frame"}
 
 	// TooManyRolls is an error. :(
-	TooManyRolls = BowlingError{3, "too many rolls"}
+	TooManyRolls = BowlingError{3, "Too many rolls"}
 
 	// NotEnoughRolls is an error. :(
-	NotEnoughRolls = BowlingError{4, "not enough rolls"}
+	NotEnoughRolls = BowlingError{4, "Not enough rolls"}
 )

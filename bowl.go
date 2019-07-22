@@ -3,9 +3,10 @@ package bowl
 
 // Score is amazing.
 type Score struct {
-	Total int          `json:"total"`
-	Valid bool         `json:"valid"`
-	Error BowlingError `json:"error"`
+	Total        int  `json:"total"`
+	Valid        bool `json:"valid"`
+	Error        BowlingError
+	ErrorMessage string `json:"error"`
 }
 
 // SetError is sad.
@@ -13,13 +14,14 @@ func (s *Score) SetError(err BowlingError) {
 	s.Valid = false
 	if s.Error.code == 0 || err.code < s.Error.code {
 		s.Error = err
+		s.ErrorMessage = err.message
 	}
 }
 
 // GetScore is funny.
 func GetScore(rolls []int) Score {
 	var score Score
-
+	score.Valid = true
 	scoreMultipliers := []int{1, 1}
 	currentFrame := 0
 
@@ -68,5 +70,8 @@ func GetScore(rolls []int) Score {
 		i++
 	}
 
+	if !score.Valid {
+		score.Total = 0
+	}
 	return score
 }
