@@ -41,7 +41,7 @@ func getFiles(directory string) Cases {
 	return cases
 }
 
-func TestGetScore(t *testing.T) {
+func TestGetScoreWithUseCase1(t *testing.T) {
 	directory := "./use-cases/use-cases-1"
 	files := getFiles(directory)
 
@@ -69,6 +69,44 @@ func TestGetScore(t *testing.T) {
 
 		if got := GetScore(frames); got.Total != expectedScore.Total {
 			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Total, got.Total)
+		}
+	}
+}
+
+func TestGetScoreWithUseCase2(t *testing.T) {
+	directory := "./use-cases/use-cases-2"
+	files := getFiles(directory)
+
+	for i, file := range files.input {
+		var frames []int
+		var expectedScore Score
+
+		content, err := ioutil.ReadFile(file)
+		if err != nil {
+			t.Fatalf("unexpected err: %s.", err.Error())
+		}
+
+		if err := json.Unmarshal(content, &frames); err != nil {
+			t.Fatalf("Unexpected error: %s.", err.Error())
+		}
+
+		outputContent, err := ioutil.ReadFile(files.output[i])
+		if err != nil {
+			t.Fatalf("unexpected err: %s.", err.Error())
+		}
+
+		if err := json.Unmarshal(outputContent, &expectedScore); err != nil {
+			t.Fatalf("Unexpected error: %s.", err.Error())
+		}
+
+		if got := GetScore(frames); got.Total != expectedScore.Total {
+			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Total, got.Total)
+		}
+		if got := GetScore(frames); got.Valid != expectedScore.Valid {
+			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Valid, got.Valid)
+		}
+		if got := GetScore(frames); got.Error != expectedScore.Error {
+			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Error, got.Error)
 		}
 	}
 }
