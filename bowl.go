@@ -3,20 +3,17 @@ package bowl
 
 // Score is amazing.
 type Score struct {
-	Total int `json:"total"`
+	Total int          `json:"total"`
+	Valid bool         `json:"valid"`
+	Error BowlingError `json:"error"`
 }
 
-func isStrike(roll int) bool {
-	return roll == 10
-}
-
-func isSpare(rollA int, rollB int) bool {
-	return isStrike(rollA + rollB)
-}
-
-func getAndShift(multipliers []int) (int, []int) {
-	current := multipliers[0]
-	return current, []int{multipliers[1], 1}
+// SetError is sad.
+func (s *Score) SetError(err BowlingError) {
+	s.Valid = false
+	if s.Error.code == 0 || err.code < s.Error.code {
+		s.Error = err
+	}
 }
 
 // GetScore is funny.
@@ -33,6 +30,10 @@ func GetScore(rolls []int) Score {
 		currentScoreMultiplier, tScoreMultipliers := getAndShift(scoreMultipliers)
 		scoreMultipliers = tScoreMultipliers
 
+		if !isValidRoll(roll) {
+			score.SetError(InvalidRoll)
+		}
+
 		score.Total += roll * currentScoreMultiplier
 		if isStrike(roll) && currentFrame != 10 {
 			scoreMultipliers[0]++
@@ -48,11 +49,24 @@ func GetScore(rolls []int) Score {
 			scoreMultipliers[1]++
 		}
 
+		if !isValidRoll(rolls[i+1]) {
+			score.SetError(InvalidRoll)
+		}
+
+		if !isValidFrame(roll, rolls[i+1]) {
+			score.SetError(InvalidFrame)
+		}
+
 		currentScoreMultiplier, tScoreMultipliers = getAndShift(scoreMultipliers)
 		scoreMultipliers = tScoreMultipliers
 		score.Total += rolls[i+1] * currentScoreMultiplier
 
+		if currentFrame > 10 {
+			score.SetError(TooManyRolls)
+		}
+
 		i++
 	}
+
 	return score
 }

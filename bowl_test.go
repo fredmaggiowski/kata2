@@ -103,10 +103,10 @@ func TestGetScoreWithUseCase2(t *testing.T) {
 			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Total, got.Total)
 		}
 		if got := GetScore(frames); got.Valid != expectedScore.Valid {
-			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Valid, got.Valid)
+			t.Fatalf("Unexpected score for %s. Expected: %t - found: %t.", file, expectedScore.Valid, got.Valid)
 		}
 		if got := GetScore(frames); got.Error != expectedScore.Error {
-			t.Fatalf("Unexpected score for %s. Expected: %d - found: %d.", file, expectedScore.Error, got.Error)
+			t.Fatalf("Unexpected score for %s. Expected: %+v - found: %+v.", file, expectedScore.Error, got.Error)
 		}
 	}
 }
