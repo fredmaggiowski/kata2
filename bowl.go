@@ -32,9 +32,6 @@ func GetScore(rolls []int) Score {
 		roll := rolls[i]
 		currentScoreMultiplier, tScoreMultipliers := getAndShift(scoreMultipliers)
 		scoreMultipliers = tScoreMultipliers
-		//  := scoreMultipliers[0]
-		// scoreMultipliers[0] = scoreMultipliers[1]
-		// scoreMultipliers[1] = 1
 
 		score.Total += roll * currentScoreMultiplier
 		if isStrike(roll) && currentFrame != 10 {
